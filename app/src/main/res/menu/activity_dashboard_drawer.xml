@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/ipaddressId"
+            android:icon="@drawable/ip"
+            android:title="IP Address" />
+        <item
+            android:id="@+id/thresholdId"
+            android:icon="@drawable/threshold"
+            android:title="Threshold" />
+        <item
+            android:id="@+id/configurationId"
+            android:icon="@drawable/settings"
+            android:title="Configuration" />
+        <item
+            android:id="@+id/startserverId"
+            android:icon="@drawable/server"
+            android:title="Start Server" />
+        <item
+            android:id="@+id/airqualityId"
+            android:icon="@drawable/air1"
+            android:title="Air Quality" />
+    </group>
+
+    <item android:title="Data">
+        <menu>
+            <item
+                android:id="@+id/analyticsId"
+                android:icon="@drawable/analytics"
+                android:title="Analytics" />
+        </menu>
+    </item>
+
+</menu>
