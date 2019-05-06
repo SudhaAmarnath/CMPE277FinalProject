@@ -29,4 +29,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'pl.pawelkleczkowski.customgauge:CustomGauge:1.0.3'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
+    def aws_version = "2.13.+"
+    implementation "com.amazonaws:aws-android-sdk-iot:$aws_version"
+    implementation ('com.amazonaws:aws-android-sdk-iot:$aws_version@aar') { transitive = true}
+    implementation "com.amazonaws:aws-android-sdk-mobile-client:$aws_version"
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.8.5'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+
 }

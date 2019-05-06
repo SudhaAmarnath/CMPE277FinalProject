@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,15 +22,51 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import android.os.Handler;
+import org.json.JSONObject;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttManager;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
+import com.amazonaws.regions.Regions;
+import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import pl.pawelkleczkowski.customgauge.CustomGauge;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    static final String LOG_TAG = DashboardActivity.class.getCanonicalName();
+
     String ipAddress, threshold;
     EditText ipeditText, thresholdeditText;
+
+    CustomGauge TemperatureGauge, HumidityGauge, HeatIndexGauge;
+
+    Handler weatherMontitorHandler;
+
+    // AWS IOT parameters
+
+    private static final String CUSTOMER_SPECIFIC_ENDPOINT = "ENTER_CUSTOMER_SPECIFIC_ENDPOINT";
+    private static final String COGNITO_POOL_ID = "ENTER_COGNITO_POOL_ID";
+    private static final Regions MY_REGION = Regions.US_EAST_1;//CHANGE REGION ACCORDINGLY
+    private static final String topic = "ENTER_TOPIC";
+
+    public static String OUT = "";
+    public static String TEMPERATURE = "0.0";
+    public static String HUMIDITY = "0.0";
+    public static String HEATINDEX = "0.0";
+    public static String FAHRENHEIT = "0.0";
+    public static String KELVIN = "0.0";
+
+
+    AWSIotMqttManager mqttManager;
+    String clientId;
+    CognitoCachingCredentialsProvider credentialsProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +86,35 @@ public class DashboardActivity extends AppCompatActivity
 
         //ipeditText = (EditText) findViewById(R.id.ipeditText);
         //thresholdeditText = (EditText) findViewById(R.id.thresholdeditText);
+
+
+        // Start the handler
+        this.weatherMontitorHandler = new Handler();
+
+        TemperatureGauge = (CustomGauge) findViewById(R.id.temperatureGauge);
+        HumidityGauge = (CustomGauge) findViewById(R.id.humidityGauge);
+        HeatIndexGauge = (CustomGauge) findViewById(R.id.heatIndexGauge);
+
+
+        clientId = UUID.randomUUID().toString();
+
+        // Initialize the AWS Cognito credentials provider
+        credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                COGNITO_POOL_ID,
+                MY_REGION
+        );
+
+        // MQTT Client
+        mqttManager = new AWSIotMqttManager(clientId, CUSTOMER_SPECIFIC_ENDPOINT);
+
+        Log.d(LOG_TAG, "clientId = " + clientId);
+
+
+        weatherMonitorRunnable.run();
+        new WeatherMonitorAsyncTask().execute();
+
+
     }
 
     @Override
@@ -69,12 +136,9 @@ public class DashboardActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
             return true;
         }
@@ -117,6 +181,173 @@ public class DashboardActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private final Runnable weatherMonitorRunnable = new Runnable()
+    {
+        public void run()
+        {
+            new WeatherMonitorAsyncTask().execute();
+            DashboardActivity.this.weatherMontitorHandler.postDelayed(weatherMonitorRunnable,2000);
+        }
+
+    };
+
+
+    public class WeatherMonitorAsyncTask extends AsyncTask<Void, Void, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+            try {
+
+                mqttManager.connect(credentialsProvider, new AWSIotMqttClientStatusCallback() {
+                    @Override
+                    public void onStatusChanged(final AWSIotMqttClientStatus status, final Throwable throwable) {
+                        Log.d(LOG_TAG, "Status = " + String.valueOf(status));
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (status == AWSIotMqttClientStatus.Connecting) {
+                                    Log.d(LOG_TAG, "Connecting");
+
+                                } else if (status == AWSIotMqttClientStatus.Connected) {
+                                    Log.d(LOG_TAG, "Connected");
+
+                                } else if (status == AWSIotMqttClientStatus.Reconnecting) {
+                                    if (throwable != null) {
+                                        Log.e(LOG_TAG, "Connection error.", throwable);
+                                    }
+                                } else if (status == AWSIotMqttClientStatus.ConnectionLost) {
+                                    if (throwable != null) {
+                                        Log.e(LOG_TAG, "Connection error.", throwable);
+                                        throwable.printStackTrace();
+                                    }
+                                    Log.d(LOG_TAG, "Disconnected");
+                                } else {
+                                    Log.d(LOG_TAG, "Disconnected");
+                                }
+                            }
+                        });
+                    }
+                });
+            } catch (final Exception e) {
+                Log.e(LOG_TAG, "Connection error.", e);
+            }
+
+        }
+
+        @Override
+        public String doInBackground(Void... params) {
+
+            JSONObject jObject;
+
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Log.d(LOG_TAG, "topic = " + topic);
+
+            try {
+
+                mqttManager.subscribeToTopic(topic, AWSIotMqttQos.QOS0,
+                        new AWSIotMqttNewMessageCallback() {
+                            @Override
+                            public void onMessageArrived(final String topic, final byte[] data) {
+                                try {
+                                    String message = new String(data, "UTF-8");
+                                    setCurrentSensorValues(message);
+                                    Log.d(LOG_TAG, "Message received from AWS IoT: " + message);
+                                } catch (UnsupportedEncodingException e) {
+                                    Log.e(LOG_TAG, "Message encoding error: ", e);
+                                }
+                            }
+                        });
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Subscription error: ", e);
+            }
+
+            return getCurrentSensorValues();
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            String jsonStrTemperature;
+            String jsonStrHumidity;
+            String jsonStrHeatIndex;
+            String jsonStrFahrenheit;
+            String jsonStrKelvin;
+            float tempIndexConvInt = 50;
+
+            try {
+
+
+                JSONObject object = new JSONObject(result);
+                Log.d(LOG_TAG, "JSONObject" + object);
+
+                jsonStrTemperature = String.valueOf(object.getDouble("temperature"));
+                jsonStrFahrenheit = String.valueOf(object.getDouble("fahrenheit"));
+                jsonStrKelvin = String.valueOf(object.getDouble("kelvin"));
+                jsonStrHumidity = String.valueOf(object.getDouble("humidity"));
+                jsonStrHeatIndex = String.valueOf(object.getDouble("heatIndex"));
+
+                TemperatureGauge.setValue((int)Double.parseDouble(jsonStrTemperature));
+                HumidityGauge.setValue((int)Double.parseDouble(jsonStrHumidity));
+                HeatIndexGauge.setValue((int)Double.parseDouble(jsonStrHeatIndex));
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void setCurrentSensorValues (String message) {
+
+        Pattern pattern = Pattern.compile("[0-9]*\\.?[0-9]+");
+
+        // Parse the IoT output and store in the variables
+        if(message.contains("temp")) {
+            Matcher m = pattern.matcher(message);
+            while (m.find()) {TEMPERATURE = m.group();}
+        } else if(message.contains("kelvin")) {
+            Matcher m = pattern.matcher(message);
+            while (m.find()) {KELVIN = m.group();}
+        } else if (message.contains("fahrenheit")) {
+            Matcher m = pattern.matcher(message);
+            while (m.find()) {FAHRENHEIT = m.group();}
+        } else if (message.contains("heatIndex")) {
+            Matcher m = pattern.matcher(message);
+            while (m.find()) {HEATINDEX = m.group();}
+        } else if (message.contains("humidity")) {
+            Matcher m = pattern.matcher(message);
+            while (m.find()) {HUMIDITY = m.group();}
+        }
+
+    }
+
+    public String getCurrentSensorValues() {
+
+        // Build the final sensor string output
+        OUT = "{" +
+                "\"temperature\": " + TEMPERATURE + ", " +
+                "\"humidity\": " + HUMIDITY + ", " +
+                "\"heatIndex\": " + HEATINDEX + ", " +
+                "\"fahrenheit\": " + FAHRENHEIT + ", " +
+                "\"kelvin\": " + KELVIN +
+                "}";
+
+        return OUT;
     }
 
     public void ipAddress(){
