@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Stream.h>
-
+#include <math.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
 
@@ -38,20 +38,19 @@
 #define c9 (-0.00000199)
 
 
-
 extern "C" {
   #include "user_interface.h"
 }
 
 
 //AWS IOT config, change these:
-char wifi_ssid[]       = "your-ssid";
-char wifi_password[]   = "your-password";
-char aws_endpoint[]    = "your-endpoint.iot.eu-west-1.amazonaws.com";
-char aws_key[]         = "your-iam-key";
-char aws_secret[]      = "your-iam-secret-key";
-char aws_region[]      = "eu-west-1";
-const char* aws_topic  = "$aws/things/your-device/shadow/update";
+char wifi_ssid[]       = "enter-ssid";
+char wifi_password[]   = "enter-password";
+char aws_endpoint[]    = "enter-endpoint.iot.****.com";
+char aws_key[]         = "enter-iam-key";
+char aws_secret[]      = "enter-iam-secret-key";
+char aws_region[]      = "eu-****-1";
+const char* aws_topic  = "$aws/things/shadow-device/shadow/update";
 int port = 443;
 
 
@@ -75,7 +74,7 @@ float Humidity;
 float f;
 float h;
 
-const int len = 100;  
+const int len = 200;  
 char buf[len];
 String str = "";
 int rc;
@@ -100,7 +99,7 @@ char* generateClientID () {
 //count messages arrived
 int arrivedcount = 0;
 
-//callback to handle mqtt messages
+//handle mqtt messages
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
   Serial.print(topic);
@@ -111,10 +110,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println();
 }
 
-//connects to websocket layer and mqtt layer
+//mqtt connection
 bool connect () {
-
-
 
     if (client.connected()) {    
         client.disconnect ();
@@ -148,7 +145,7 @@ void subscribe () {
     client.setCallback(callback);
     client.subscribe(aws_topic);
    //subscript to a topic
-    Serial.println("MQTT subscribed");
+    Serial.println("Subscribed to MQTT topic");
 }
 
 //send a message to AWS mqqt IoT
@@ -174,37 +171,8 @@ void sendmessage () {
 
     // Send Temperature value to AWS IoT
     //delay (100);
-    str = AwsShadowJsonFormat("temp",Temperature);
-    str.toCharArray(buf,len);
-    Serial.println(buf);
-    rc = client.publish(aws_topic, buf);
-
-    // Send Kelvin value to AWS IoT
-    //delay (100);
-    str = AwsShadowJsonFormat("kelvin",Kelvin);
-    str.toCharArray(buf,len);
-    Serial.println(buf);
-    rc = client.publish(aws_topic, buf);
-
-    // Send Fahrenheit value to AWS IoT
-    //delay (100);
-    str = AwsShadowJsonFormat("fahrenheit",Fahrenheit);
-    str.toCharArray(buf,len);
-    Serial.println(buf);
-    rc = client.publish(aws_topic, buf);
-
-
-    // Send HeatIndex value to AWS IoT
-    //delay (100);
-    str = AwsShadowJsonFormat("heatIndex",HeatIndex);
-    str.toCharArray(buf,len);
-    Serial.println(buf);
-    rc = client.publish(aws_topic, buf);
-
-
-    // Send Humidity value to AWS IoT
-    //delay (100);
-    str = AwsShadowJsonFormat("humidity",Humidity);
+    
+    str = AwsShadowJsonFormat(Temperature, Fahrenheit, Humidity, HeatIndex);
     str.toCharArray(buf,len);
     Serial.println(buf);
     rc = client.publish(aws_topic, buf);
@@ -212,7 +180,6 @@ void sendmessage () {
     Serial.println ("----------------------------------------------------------");
     
 }
-
 
 void setup() {
   
@@ -253,9 +220,9 @@ void loop() {
   if (awsWSclient.connected ()) {    
       client.loop ();
       sendmessage();
-      // wait for 60 secs after resending the data
-      Serial.println ("Wait 5 seconds");      
-      delay (5000);
+      // wait for 10 secs after resending the data
+      Serial.println ("Wait 10 seconds");      
+      delay (10000);
   } else {
     // reconnect to the AWS Server
     if (connect ()){
@@ -265,16 +232,21 @@ void loop() {
 
 }
 
-String AwsShadowJsonFormat(String stattype, float statvalue) {
+// make json format for sending the data
+String AwsShadowJsonFormat(float tempValue, float fahrenheitValue, float humidityValue, float heatIndexValue) {
 
-  // AWS shadow JSON format
-  //{\"state\":{\"reported\":{\"humidity\": 20}, \"desired\":{\"humidity\": 20}}}
-
+  // AWS shadow JSON format optimized variable names
+  //str = "{\"state\":{\"reported\":{\"fah\":79.30,\"tem\":26.30,\"hum\":48.00,\"hid\":80.10}}}"
+  
   String str = "";
+  
   str += "{";
-  str += "\"state\": ";
-  str +=   "{\"reported\": ";
-  str +=     "{\"" + stattype + "\": " + statvalue + "}";  
+  str += "\"state\":";
+  str +=   "{\"reported\":";
+  str +=     String("{\"fah\":") + roundf(100 * fahrenheitValue)/100;
+  str +=     String(",\"tem\":") + roundf(100 * tempValue)/100; 
+  str +=     String(",\"hum\":") + roundf(100 * humidityValue)/100; 
+  str +=     String(",\"hid\":") + roundf(100 * heatIndexValue)/100 + "}"; 
   str +=   "}";
   str += "}";
 
