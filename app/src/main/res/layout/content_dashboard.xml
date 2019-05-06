@@ -11,36 +11,136 @@
 
     <pl.pawelkleczkowski.customgauge.CustomGauge
         android:id="@+id/temperatureGauge"
-        android:layout_width="177dp"
-        android:layout_height="178dp"
+        android:layout_width="191dp"
+        android:layout_height="179dp"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
-        app:gaugeEndValue="25"
+        app:gaugeStartValue="-50"
+        app:gaugeEndValue="100"
         app:gaugePointEndColor="@color/md_red_500"
         app:gaugePointStartColor="@color/md_light_blue_300"
         app:gaugeStartAngle="135"
-        app:gaugeStartValue="0"
         app:gaugeStrokeCap="ROUND"
         app:gaugeStrokeColor="@color/md_grey_400"
         app:gaugeStrokeWidth="10dp"
         app:gaugeSweepAngle="270"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.144"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textToday"
+        android:layout_width="71dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="TODAY"
+        android:textColor="@color/md_blue_grey_400"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textDayHigh"
+        android:layout_width="67dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="52dp"
+        android:text="Day High : "
+        android:textColor="@color/md_blue_grey_400"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
+        app:layout_constraintTop_toTopOf="@+id/temperatureGauge" />
+
+    <TextView
+        android:id="@+id/textDayHighValue"
+        android:layout_width="24dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textAlignment="textStart"
+        android:textColor="@color/md_blue_grey_400"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textDayHigh"
+        app:layout_constraintStart_toEndOf="@+id/textDayHigh"
+        app:layout_constraintTop_toTopOf="@+id/textDayHigh"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textDayLow"
+        android:layout_width="67dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="84dp"
+        android:text="Day Low  : "
+        android:textColor="@color/md_blue_grey_400"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
+        app:layout_constraintTop_toTopOf="@+id/temperatureGauge" />
+
+    <TextView
+        android:id="@+id/textDayLowValue"
+        android:layout_width="24dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textAlignment="textStart"
+        android:textColor="@color/md_blue_grey_400"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textDayLow"
+        app:layout_constraintStart_toEndOf="@+id/textDayLow"
+        app:layout_constraintTop_toTopOf="@+id/textDayLow"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textTemerature"
+        android:layout_width="88dp"
+        android:layout_height="109dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="228dp"
+        android:layout_marginTop="32dp"
+        android:text="0"
+        android:textColor="@color/md_blue_grey_400"
+        android:textSize="75sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
+        app:layout_constraintTop_toTopOf="@+id/temperatureGauge" />
+
+    <TextView
+        android:id="@+id/textTemeratureUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textTemerature"
+        android:layout_marginStart="304dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/textTemerature"
+        android:layout_toRightOf="@+id/textTemerature"
+        android:paddingLeft="5dp"
+        android:text="°C"
+        android:textColor="@color/md_blue_grey_400"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
+        app:layout_constraintTop_toTopOf="@+id/temperatureGauge" />
 
     <pl.pawelkleczkowski.customgauge.CustomGauge
         android:id="@+id/humidityGauge"
-        android:layout_width="131dp"
-        android:layout_height="131dp"
+        android:layout_width="154dp"
+        android:layout_height="145dp"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
@@ -62,11 +162,45 @@
         app:gaugeSweepAngle="270"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.462"
+        app:layout_constraintVertical_bias="0.671"
         tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/textHumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="52dp"
+        android:text="0"
+        android:textColor="@color/md_blue_grey_400"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/humidityGauge"
+        app:layout_constraintTop_toTopOf="@+id/humidityGauge" />
+
+    <TextView
+        android:id="@+id/textHumidityUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textHumidity"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="36dp"
+        android:layout_toEndOf="@+id/textHumidity"
+        android:layout_toRightOf="@+id/textHumidity"
+        android:paddingLeft="5dp"
+        android:text="%"
+        android:textColor="@color/md_blue_grey_400"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/humidityGauge"
+        app:layout_constraintTop_toTopOf="@+id/humidityGauge" />
+
+
 
     <pl.pawelkleczkowski.customgauge.CustomGauge
         android:id="@+id/heatIndexGauge"
@@ -82,23 +216,24 @@
         android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
+        app:gaugeEndValue="150"
         app:gaugePointEndColor="@color/md_blue_800"
         app:gaugePointStartColor="@color/md_blue_300"
         app:gaugeStartAngle="135"
         app:gaugeStartValue="0"
-        app:gaugeEndValue="150"
         app:gaugeStrokeCap="ROUND"
         app:gaugeStrokeColor="@color/md_grey_400"
         app:gaugeStrokeWidth="10dp"
         app:gaugeSweepAngle="270"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.967"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.462"
+        app:layout_constraintVertical_bias="0.676"
         tools:ignore="MissingConstraints" />
 
+    <!--
     <de.nitri.gauge.Gauge
         android:id="@+id/farenheitGauge"
         android:layout_width="169dp"
@@ -119,24 +254,24 @@
         gauge:minValue="0"
         gauge:totalNicks="150"
         gauge:valuePerNick="1" />
-
+    -->
 
     <TextView
         android:id="@+id/textHeatIndex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="60dp"
-        android:text="0.0"
-        android:textColor="#E4451D"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="52dp"
+        android:text="0"
+        android:textColor="@color/md_blue_grey_400"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/heatIndexGauge"
         app:layout_constraintTop_toTopOf="@+id/heatIndexGauge" />
 
     <TextView
-        android:id="@+id/textView22"
+        android:id="@+id/textHeatIndexUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textHeatIndex"
@@ -146,10 +281,12 @@
         android:layout_toRightOf="@+id/textHeatIndex"
         android:paddingLeft="5dp"
         android:text="°C"
-        android:textColor="#FFD2D2D2"
+        android:textColor="@color/md_blue_grey_400"
         android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/heatIndexGauge"
         app:layout_constraintTop_toTopOf="@+id/heatIndexGauge" />
+
 
 
 </android.support.constraint.ConstraintLayout>

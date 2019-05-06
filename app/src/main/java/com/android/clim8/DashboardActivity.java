@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
+import java.util.Calendar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,15 +53,17 @@ public class DashboardActivity extends AppCompatActivity
     String threshold;
 
     TextView TextHeatIndex;
-
-
+    TextView TextTemperature;
+    TextView TextDayHighValue;
+    TextView TextDayLowValue;
+    TextView TextHumidity;
     EditText ipeditText;
     EditText thresholdeditText;
 
     CustomGauge TemperatureGauge;
     CustomGauge HumidityGauge;
     CustomGauge HeatIndexGauge;
-    Gauge FarenheitGauge;
+    //Gauge FarenheitGauge;
 
     Handler weatherMontitorHandler;
 
@@ -69,7 +72,6 @@ public class DashboardActivity extends AppCompatActivity
     private static final String COGNITO_POOL_ID = "ENTER_COGNITO_POOL_ID";
     private static final Regions MY_REGION = Regions.US_EAST_1;//CHANGE REGION ACCORDINGLY
     private static final String topic = "ENTER_TOPIC";
-
 
 
     public static String OUT = "";
@@ -107,10 +109,14 @@ public class DashboardActivity extends AppCompatActivity
         this.weatherMontitorHandler = new Handler();
 
         TextHeatIndex = (TextView) findViewById(R.id.textHeatIndex);
+        TextHumidity = (TextView) findViewById(R.id.textHumidity);
+        TextTemperature = (TextView) findViewById(R.id.textTemerature);
+        TextDayHighValue = (TextView) findViewById(R.id.textDayHighValue);
+        TextDayLowValue = (TextView) findViewById(R.id.textDayLowValue);
         TemperatureGauge = (CustomGauge) findViewById(R.id.temperatureGauge);
         HumidityGauge = (CustomGauge) findViewById(R.id.humidityGauge);
         HeatIndexGauge = (CustomGauge) findViewById(R.id.heatIndexGauge);
-        FarenheitGauge = (Gauge) findViewById(R.id.farenheitGauge);
+        //FarenheitGauge = (Gauge) findViewById(R.id.farenheitGauge);
 
         clientId = UUID.randomUUID().toString();
 
@@ -307,16 +313,22 @@ public class DashboardActivity extends AppCompatActivity
             try {
                 JSONObject object = new JSONObject(result);
                 Log.d(LOG_TAG, "JSONObject" + object);
-                jsonStrTemperature = String.valueOf(object.getDouble("temperature"));
-                jsonStrFahrenheit = String.valueOf(object.getDouble("fahrenheit"));
-                jsonStrHumidity = String.valueOf(object.getDouble("humidity"));
-                jsonStrHeatIndex = String.valueOf(object.getDouble("heatIndex"));
-                TemperatureGauge.setValue((int)Double.parseDouble(jsonStrTemperature));
-                HumidityGauge.setValue((int)Double.parseDouble(jsonStrHumidity));
-                HeatIndexGauge.setValue((int)Double.parseDouble(jsonStrHeatIndex));
-                FarenheitGauge.setValue(Float.parseFloat((jsonStrFahrenheit)));
+                jsonStrTemperature = String.valueOf(object.getInt("temperature"));
+                jsonStrFahrenheit = String.valueOf(object.getInt("fahrenheit"));
+                jsonStrHumidity = String.valueOf(object.getInt("humidity"));
+                jsonStrHeatIndex = String.valueOf(object.getInt("heatIndex"));
+
+                TemperatureGauge.setValue(Integer.valueOf(jsonStrTemperature));
+                HumidityGauge.setValue(Integer.valueOf(jsonStrHumidity));
+                HeatIndexGauge.setValue(Integer.valueOf(jsonStrHeatIndex));
+
+                //FarenheitGauge.setValue(Float.parseFloat((jsonStrFahrenheit)));
 
                 TextHeatIndex.setText(jsonStrHeatIndex);
+                TextHumidity.setText(jsonStrHumidity);
+                TextTemperature.setText(jsonStrTemperature);
+                TextDayHighValue.setText(jsonStrTemperature);
+                TextDayLowValue.setText(jsonStrTemperature);
 
             }catch (Exception e){
                 e.printStackTrace();
