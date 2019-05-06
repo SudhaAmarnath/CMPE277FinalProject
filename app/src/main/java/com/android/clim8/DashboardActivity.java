@@ -21,9 +21,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttManager;
@@ -34,6 +39,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.nitri.gauge.Gauge;
 import pl.pawelkleczkowski.customgauge.CustomGauge;
 
 public class DashboardActivity extends AppCompatActivity
@@ -41,27 +48,35 @@ public class DashboardActivity extends AppCompatActivity
 
     static final String LOG_TAG = DashboardActivity.class.getCanonicalName();
 
-    String ipAddress, threshold;
-    EditText ipeditText, thresholdeditText;
+    String ipAddress;
+    String threshold;
 
-    CustomGauge TemperatureGauge, HumidityGauge, HeatIndexGauge;
+    TextView TextHeatIndex;
+
+
+    EditText ipeditText;
+    EditText thresholdeditText;
+
+    CustomGauge TemperatureGauge;
+    CustomGauge HumidityGauge;
+    CustomGauge HeatIndexGauge;
+    Gauge FarenheitGauge;
 
     Handler weatherMontitorHandler;
 
     // AWS IOT parameters
-
     private static final String CUSTOMER_SPECIFIC_ENDPOINT = "ENTER_CUSTOMER_SPECIFIC_ENDPOINT";
     private static final String COGNITO_POOL_ID = "ENTER_COGNITO_POOL_ID";
     private static final Regions MY_REGION = Regions.US_EAST_1;//CHANGE REGION ACCORDINGLY
     private static final String topic = "ENTER_TOPIC";
+
+
 
     public static String OUT = "";
     public static String TEMPERATURE = "0.0";
     public static String HUMIDITY = "0.0";
     public static String HEATINDEX = "0.0";
     public static String FAHRENHEIT = "0.0";
-    public static String KELVIN = "0.0";
-
 
     AWSIotMqttManager mqttManager;
     String clientId;
@@ -91,10 +106,11 @@ public class DashboardActivity extends AppCompatActivity
         // Start the handler
         this.weatherMontitorHandler = new Handler();
 
+        TextHeatIndex = (TextView) findViewById(R.id.textHeatIndex);
         TemperatureGauge = (CustomGauge) findViewById(R.id.temperatureGauge);
         HumidityGauge = (CustomGauge) findViewById(R.id.humidityGauge);
         HeatIndexGauge = (CustomGauge) findViewById(R.id.heatIndexGauge);
-
+        FarenheitGauge = (Gauge) findViewById(R.id.farenheitGauge);
 
         clientId = UUID.randomUUID().toString();
 
@@ -183,7 +199,6 @@ public class DashboardActivity extends AppCompatActivity
         return true;
     }
 
-
     private final Runnable weatherMonitorRunnable = new Runnable()
     {
         public void run()
@@ -197,13 +212,14 @@ public class DashboardActivity extends AppCompatActivity
 
     public class WeatherMonitorAsyncTask extends AsyncTask<Void, Void, String> {
 
-
         @Override
         protected void onPreExecute() {
 
             super.onPreExecute();
 
             try {
+
+                Thread.sleep(1000);
 
                 mqttManager.connect(credentialsProvider, new AWSIotMqttClientStatusCallback() {
                     @Override
@@ -286,24 +302,21 @@ public class DashboardActivity extends AppCompatActivity
             String jsonStrHumidity;
             String jsonStrHeatIndex;
             String jsonStrFahrenheit;
-            String jsonStrKelvin;
             float tempIndexConvInt = 50;
 
             try {
-
-
                 JSONObject object = new JSONObject(result);
                 Log.d(LOG_TAG, "JSONObject" + object);
-
                 jsonStrTemperature = String.valueOf(object.getDouble("temperature"));
                 jsonStrFahrenheit = String.valueOf(object.getDouble("fahrenheit"));
-                jsonStrKelvin = String.valueOf(object.getDouble("kelvin"));
                 jsonStrHumidity = String.valueOf(object.getDouble("humidity"));
                 jsonStrHeatIndex = String.valueOf(object.getDouble("heatIndex"));
-
                 TemperatureGauge.setValue((int)Double.parseDouble(jsonStrTemperature));
                 HumidityGauge.setValue((int)Double.parseDouble(jsonStrHumidity));
                 HeatIndexGauge.setValue((int)Double.parseDouble(jsonStrHeatIndex));
+                FarenheitGauge.setValue(Float.parseFloat((jsonStrFahrenheit)));
+
+                TextHeatIndex.setText(jsonStrHeatIndex);
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -314,24 +327,16 @@ public class DashboardActivity extends AppCompatActivity
 
     public void setCurrentSensorValues (String message) {
 
-        Pattern pattern = Pattern.compile("[0-9]*\\.?[0-9]+");
-
-        // Parse the IoT output and store in the variables
-        if(message.contains("temp")) {
-            Matcher m = pattern.matcher(message);
-            while (m.find()) {TEMPERATURE = m.group();}
-        } else if(message.contains("kelvin")) {
-            Matcher m = pattern.matcher(message);
-            while (m.find()) {KELVIN = m.group();}
-        } else if (message.contains("fahrenheit")) {
-            Matcher m = pattern.matcher(message);
-            while (m.find()) {FAHRENHEIT = m.group();}
-        } else if (message.contains("heatIndex")) {
-            Matcher m = pattern.matcher(message);
-            while (m.find()) {HEATINDEX = m.group();}
-        } else if (message.contains("humidity")) {
-            Matcher m = pattern.matcher(message);
-            while (m.find()) {HUMIDITY = m.group();}
+        try {
+            JSONObject jsonObjectShadow = new JSONObject(message);
+            JSONObject jsonObjectState =  jsonObjectShadow.getJSONObject("state");
+            JSONObject jsonObjectReported =  jsonObjectState.getJSONObject("reported");
+            TEMPERATURE = String.valueOf(jsonObjectReported.getDouble("tem"));
+            FAHRENHEIT  = String.valueOf(jsonObjectReported.getDouble("fah"));
+            HUMIDITY    = String.valueOf(jsonObjectReported.getDouble("hum"));
+            HEATINDEX   = String.valueOf(jsonObjectReported.getDouble("hid"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -343,8 +348,7 @@ public class DashboardActivity extends AppCompatActivity
                 "\"temperature\": " + TEMPERATURE + ", " +
                 "\"humidity\": " + HUMIDITY + ", " +
                 "\"heatIndex\": " + HEATINDEX + ", " +
-                "\"fahrenheit\": " + FAHRENHEIT + ", " +
-                "\"kelvin\": " + KELVIN +
+                "\"fahrenheit\": " + FAHRENHEIT +
                 "}";
 
         return OUT;
