@@ -57,6 +57,7 @@ public class DashboardActivity extends AppCompatActivity
     TextView TextDayHighValue;
     TextView TextDayLowValue;
     TextView TextHumidity;
+    TextView TextFarhenheit;
     EditText ipeditText;
     EditText thresholdeditText;
 
@@ -68,11 +69,11 @@ public class DashboardActivity extends AppCompatActivity
     Handler weatherMontitorHandler;
 
     // AWS IOT parameters
+
     private static final String CUSTOMER_SPECIFIC_ENDPOINT = "ENTER_CUSTOMER_SPECIFIC_ENDPOINT";
     private static final String COGNITO_POOL_ID = "ENTER_COGNITO_POOL_ID";
     private static final Regions MY_REGION = Regions.US_EAST_1;//CHANGE REGION ACCORDINGLY
     private static final String topic = "ENTER_TOPIC";
-
 
     public static String OUT = "";
     public static String TEMPERATURE = "0.0";
@@ -110,12 +111,9 @@ public class DashboardActivity extends AppCompatActivity
 
         TextHeatIndex = (TextView) findViewById(R.id.textHeatIndex);
         TextHumidity = (TextView) findViewById(R.id.textHumidity);
+        TextFarhenheit = (TextView) findViewById(R.id.textFarenheit);
         TextTemperature = (TextView) findViewById(R.id.textTemerature);
-        TextDayHighValue = (TextView) findViewById(R.id.textDayHighValue);
-        TextDayLowValue = (TextView) findViewById(R.id.textDayLowValue);
         TemperatureGauge = (CustomGauge) findViewById(R.id.temperatureGauge);
-        HumidityGauge = (CustomGauge) findViewById(R.id.humidityGauge);
-        HeatIndexGauge = (CustomGauge) findViewById(R.id.heatIndexGauge);
         //FarenheitGauge = (Gauge) findViewById(R.id.farenheitGauge);
 
         clientId = UUID.randomUUID().toString();
@@ -225,7 +223,7 @@ public class DashboardActivity extends AppCompatActivity
 
             try {
 
-                Thread.sleep(1000);
+                Thread.sleep(2000);
 
                 mqttManager.connect(credentialsProvider, new AWSIotMqttClientStatusCallback() {
                     @Override
@@ -270,7 +268,7 @@ public class DashboardActivity extends AppCompatActivity
             JSONObject jObject;
 
             try {
-                Thread.sleep(10000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -319,16 +317,13 @@ public class DashboardActivity extends AppCompatActivity
                 jsonStrHeatIndex = String.valueOf(object.getInt("heatIndex"));
 
                 TemperatureGauge.setValue(Integer.valueOf(jsonStrTemperature));
-                HumidityGauge.setValue(Integer.valueOf(jsonStrHumidity));
-                HeatIndexGauge.setValue(Integer.valueOf(jsonStrHeatIndex));
-
+                //HumidityGauge.setValue(Integer.valueOf(jsonStrHumidity));
+                //HeatIndexGauge.setValue(Integer.valueOf(jsonStrHeatIndex));
                 //FarenheitGauge.setValue(Float.parseFloat((jsonStrFahrenheit)));
-
                 TextHeatIndex.setText(jsonStrHeatIndex);
                 TextHumidity.setText(jsonStrHumidity);
                 TextTemperature.setText(jsonStrTemperature);
-                TextDayHighValue.setText(jsonStrTemperature);
-                TextDayLowValue.setText(jsonStrTemperature);
+                TextFarhenheit.setText(jsonStrFahrenheit);
 
             }catch (Exception e){
                 e.printStackTrace();

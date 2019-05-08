@@ -11,7 +11,7 @@
 
     <pl.pawelkleczkowski.customgauge.CustomGauge
         android:id="@+id/temperatureGauge"
-        android:layout_width="191dp"
+        android:layout_width="186dp"
         android:layout_height="179dp"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
@@ -22,11 +22,11 @@
         android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
-        app:gaugeStartValue="-50"
         app:gaugeEndValue="100"
         app:gaugePointEndColor="@color/md_red_500"
         app:gaugePointStartColor="@color/md_light_blue_300"
         app:gaugeStartAngle="135"
+        app:gaugeStartValue="-50"
         app:gaugeStrokeCap="ROUND"
         app:gaugeStrokeColor="@color/md_grey_400"
         app:gaugeStrokeWidth="10dp"
@@ -52,59 +52,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/textDayHigh"
-        android:layout_width="67dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="52dp"
-        android:text="Day High : "
-        android:textColor="@color/md_blue_grey_400"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
-        app:layout_constraintTop_toTopOf="@+id/temperatureGauge" />
-
-    <TextView
-        android:id="@+id/textDayHighValue"
-        android:layout_width="24dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="8dp"
-        android:text="0"
-        android:textAlignment="textStart"
-        android:textColor="@color/md_blue_grey_400"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textDayHigh"
-        app:layout_constraintStart_toEndOf="@+id/textDayHigh"
-        app:layout_constraintTop_toTopOf="@+id/textDayHigh"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textDayLow"
-        android:layout_width="67dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="84dp"
-        android:text="Day Low  : "
-        android:textColor="@color/md_blue_grey_400"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
-        app:layout_constraintTop_toTopOf="@+id/temperatureGauge" />
-
-    <TextView
-        android:id="@+id/textDayLowValue"
-        android:layout_width="24dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="8dp"
-        android:text="0"
-        android:textAlignment="textStart"
-        android:textColor="@color/md_blue_grey_400"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textDayLow"
-        app:layout_constraintStart_toEndOf="@+id/textDayLow"
-        app:layout_constraintTop_toTopOf="@+id/textDayLow"
-        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textTemerature"
@@ -136,7 +83,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
         app:layout_constraintTop_toTopOf="@+id/temperatureGauge" />
-
+    <!--
     <pl.pawelkleczkowski.customgauge.CustomGauge
         android:id="@+id/humidityGauge"
         android:layout_width="154dp"
@@ -162,34 +109,69 @@
         app:gaugeSweepAngle="270"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintHorizontal_bias="0.257"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.671"
+        app:layout_constraintVertical_bias="0.249"
         tools:ignore="MissingConstraints" />
+    -->
+
+
+    <TextView
+        android:id="@+id/textFarenheit"
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="74dp"
+        android:text="00"
+        android:textColor="@color/md_blue_grey_400"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageFarenheit"
+        app:layout_constraintStart_toEndOf="@+id/imageFarenheit"
+        app:layout_constraintTop_toTopOf="@+id/imageFarenheit"
+        app:layout_constraintVertical_bias="0.409" />
+
+    <TextView
+        android:id="@+id/textFarenheitUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textFarenheit"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/textFarenheit"
+        android:layout_toRightOf="@+id/textFarenheit"
+        android:paddingLeft="5dp"
+        android:text="F"
+        android:textColor="@color/md_blue_grey_400"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textFarenheit"
+        app:layout_constraintStart_toEndOf="@+id/textFarenheit"
+        app:layout_constraintTop_toTopOf="@+id/textFarenheit"
+        app:layout_constraintVertical_bias="1.0" />
 
 
     <TextView
         android:id="@+id/textHumidity"
-        android:layout_width="wrap_content"
+        android:layout_width="36dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="52dp"
-        android:text="0"
+        android:layout_marginStart="82dp"
+        android:text="00"
         android:textColor="@color/md_blue_grey_400"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/humidityGauge"
-        app:layout_constraintTop_toTopOf="@+id/humidityGauge" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageHumidity"
+        app:layout_constraintStart_toEndOf="@+id/imageHumidity"
+        app:layout_constraintTop_toTopOf="@+id/imageHumidity"
+        app:layout_constraintVertical_bias="0.409" />
 
     <TextView
         android:id="@+id/textHumidityUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textHumidity"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/textHumidity"
         android:layout_toRightOf="@+id/textHumidity"
         android:paddingLeft="5dp"
@@ -197,11 +179,12 @@
         android:textColor="@color/md_blue_grey_400"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/humidityGauge"
-        app:layout_constraintTop_toTopOf="@+id/humidityGauge" />
+        app:layout_constraintBottom_toBottomOf="@+id/textHumidity"
+        app:layout_constraintStart_toEndOf="@+id/textHumidity"
+        app:layout_constraintTop_toTopOf="@+id/textHumidity"
+        app:layout_constraintVertical_bias="1.0" />
 
-
-
+    <!--
     <pl.pawelkleczkowski.customgauge.CustomGauge
         android:id="@+id/heatIndexGauge"
         android:layout_width="152dp"
@@ -227,11 +210,72 @@
         app:gaugeSweepAngle="270"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.967"
+        app:layout_constraintHorizontal_bias="0.707"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.676"
+        app:layout_constraintVertical_bias="0.321"
         tools:ignore="MissingConstraints" />
+    -->
+
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/imageDivider1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
+        android:background="@color/md_blue_grey_200"
+        android:paddingLeft="10dp"
+        android:paddingTop="0dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="0dp"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/divider_horizontal_bright"
+        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
+        app:layout_constraintTop_toTopOf="@+id/temperatureGauge" />
+
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/imageDivider2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/md_blue_grey_200"
+        android:paddingLeft="10dp"
+        android:paddingTop="0dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="0dp"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/divider_horizontal_bright"
+        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
+        app:layout_constraintTop_toBottomOf="@+id/imageFarenheit" />
+
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/imageDivider3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/md_blue_grey_200"
+        android:paddingLeft="10dp"
+        android:paddingTop="0dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="0dp"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/divider_horizontal_bright"
+        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
+        app:layout_constraintTop_toBottomOf="@+id/imageHumidity" />
+
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/imageDivider4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/md_blue_grey_200"
+        android:paddingLeft="10dp"
+        android:paddingTop="0dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="0dp"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/divider_horizontal_bright"
+        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
+        app:layout_constraintTop_toBottomOf="@+id/imageHeatIndex" />
 
     <!--
     <de.nitri.gauge.Gauge
@@ -258,25 +302,25 @@
 
     <TextView
         android:id="@+id/textHeatIndex"
-        android:layout_width="wrap_content"
+        android:layout_width="36dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="52dp"
-        android:text="0"
+        android:layout_marginStart="74dp"
+        android:text="00"
         android:textColor="@color/md_blue_grey_400"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/heatIndexGauge"
-        app:layout_constraintTop_toTopOf="@+id/heatIndexGauge" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageHeatIndex"
+        app:layout_constraintStart_toEndOf="@+id/imageHeatIndex"
+        app:layout_constraintTop_toTopOf="@+id/imageHeatIndex" />
 
     <TextView
         android:id="@+id/textHeatIndexUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textHeatIndex"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/textHeatIndex"
         android:layout_toRightOf="@+id/textHeatIndex"
         android:paddingLeft="5dp"
@@ -284,9 +328,50 @@
         android:textColor="@color/md_blue_grey_400"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/heatIndexGauge"
-        app:layout_constraintTop_toTopOf="@+id/heatIndexGauge" />
+        app:layout_constraintBottom_toBottomOf="@+id/textHeatIndex"
+        app:layout_constraintStart_toEndOf="@+id/textHeatIndex"
+        app:layout_constraintTop_toTopOf="@+id/textHeatIndex"
+        app:layout_constraintVertical_bias="1.0" />
 
+    <ImageView
+        android:id="@+id/imageHumidity"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageDivider2"
+        gauge:srcCompat="@drawable/humidity" />
+
+    <ImageView
+        android:id="@+id/imageFarenheit"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageDivider1"
+        gauge:srcCompat="@drawable/farenheit" />
+
+    <ImageView
+        android:id="@+id/imageHeatIndex"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageDivider3"
+        gauge:srcCompat="@drawable/heatindex" />
+
+    <ImageView
+        android:id="@+id/imageCelcius"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="52dp"
+        app:layout_constraintStart_toStartOf="@+id/temperatureGauge"
+        app:layout_constraintTop_toTopOf="@+id/temperatureGauge"
+        gauge:srcCompat="@drawable/celsius" />
 
 
 </android.support.constraint.ConstraintLayout>

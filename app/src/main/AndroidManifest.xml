@@ -14,24 +14,32 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LogoActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <meta-data
             android:name="preloaded_fonts"
+            android:screenOrientation="portrait"
             android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".DashboardActivity"
             android:label="@string/title_activity_dashboard"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AnalyticsActivity" />
-        <activity android:name=".AirQualityActivity"></activity>
+        <activity
+            android:name=".AnalyticsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".AirQualityActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

@@ -37,5 +37,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.8.5'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
     implementation 'com.github.Pygmalion69:Gauge:1.2'
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
 
 }
