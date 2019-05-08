@@ -6,4 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".AnalyticsActivity">
 
+    <com.anychart.AnyChartView
+        android:id="@+id/any_chart_view"
+        android:layout_width="385dp"
+        android:layout_height="516dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
 </android.support.constraint.ConstraintLayout>
