@@ -16,7 +16,7 @@
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="8dp"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
@@ -32,7 +32,7 @@
         app:gaugeStrokeWidth="10dp"
         app:gaugeSweepAngle="270"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.162"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -58,9 +58,8 @@
         android:layout_width="88dp"
         android:layout_height="109dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="184dp"
+        android:layout_marginStart="200dp"
         android:layout_marginTop="32dp"
-        android:fontFamily="@font/open_sans_light"
         android:text="0"
         android:textAlignment="textEnd"
         android:textColor="@color/md_blue_grey_400"
@@ -77,7 +76,6 @@
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/textTemerature"
         android:layout_toRightOf="@+id/textTemerature"
-        android:fontFamily="@font/open_sans_light"
         android:paddingLeft="5dp"
         android:text="°C"
         android:textColor="@color/md_blue_grey_400"
@@ -127,7 +125,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="4dp"
-        android:fontFamily="@font/open_sans_light"
         android:text="0"
         android:textAlignment="textEnd"
         android:textColor="@color/md_blue_grey_400"
@@ -143,7 +140,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textFarenheit"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="8dp"
         android:layout_toEndOf="@+id/textFarenheit"
         android:layout_toRightOf="@+id/textFarenheit"
         android:paddingLeft="5dp"
@@ -154,7 +151,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textFarenheit"
         app:layout_constraintStart_toEndOf="@+id/textFarenheit"
         app:layout_constraintTop_toTopOf="@+id/textFarenheit"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
 
     <TextView
@@ -162,8 +159,7 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="4dp"
-        android:fontFamily="@font/open_sans_light"
+        android:layout_marginStart="12dp"
         android:text="0"
         android:textAlignment="textEnd"
         android:textColor="@color/md_blue_grey_400"
@@ -178,7 +174,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textHumidity"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="8dp"
         android:layout_toEndOf="@+id/textHumidity"
         android:layout_toRightOf="@+id/textHumidity"
         android:paddingLeft="5dp"
@@ -188,8 +184,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textHumidity"
         app:layout_constraintStart_toEndOf="@+id/textHumidity"
-        app:layout_constraintTop_toTopOf="@+id/textHumidity"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/textHumidity" />
 
     <!--
     <pl.pawelkleczkowski.customgauge.CustomGauge
@@ -228,7 +223,7 @@
         android:id="@+id/imageDivider1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="192dp"
+        android:layout_marginTop="180dp"
         android:background="@color/md_blue_grey_200"
         android:paddingLeft="10dp"
         android:paddingTop="0dp"
@@ -243,7 +238,7 @@
         android:id="@+id/imageDivider2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:background="@color/md_blue_grey_200"
         android:paddingLeft="10dp"
         android:paddingTop="0dp"
@@ -258,7 +253,7 @@
         android:id="@+id/imageDivider3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:background="@color/md_blue_grey_200"
         android:paddingLeft="10dp"
         android:paddingTop="0dp"
@@ -273,7 +268,7 @@
         android:id="@+id/imageDivider4"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="4dp"
         android:background="@color/md_blue_grey_200"
         android:paddingLeft="10dp"
         android:paddingTop="0dp"
@@ -313,7 +308,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="4dp"
-        android:fontFamily="@font/open_sans_light"
         android:text="0"
         android:textAlignment="textEnd"
         android:textColor="@color/md_blue_grey_400"
@@ -328,7 +322,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textHeatIndex"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/textHeatIndex"
         android:layout_toRightOf="@+id/textHeatIndex"
         android:paddingLeft="5dp"
@@ -339,7 +334,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textHeatIndex"
         app:layout_constraintStart_toEndOf="@+id/textHeatIndex"
         app:layout_constraintTop_toTopOf="@+id/textHeatIndex"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
 
     <TextView
@@ -348,7 +343,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="4dp"
-        android:fontFamily="@font/open_sans_light"
         android:text="0"
         android:textAlignment="textEnd"
         android:textColor="@color/md_blue_grey_400"
@@ -356,15 +350,15 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageDewPoint"
         app:layout_constraintStart_toEndOf="@+id/imageDewPoint"
-        app:layout_constraintTop_toTopOf="@+id/imageDewPoint"
-        app:layout_constraintVertical_bias="0.533" />
+        app:layout_constraintTop_toTopOf="@+id/imageDewPoint" />
 
     <TextView
         android:id="@+id/textDewPointUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textDewPoint"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/textDewPoint"
         android:layout_toRightOf="@+id/textDewPoint"
         android:paddingLeft="5dp"
@@ -381,7 +375,7 @@
         android:id="@+id/imageHumidity"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageDivider2"
@@ -401,7 +395,7 @@
         android:id="@+id/imageHeatIndex"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageDivider3"
@@ -421,7 +415,7 @@
         android:id="@+id/imageDewPoint"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageDivider4"
@@ -432,7 +426,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
-        android:fontFamily="@font/open_sans_light"
         android:text="-50"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/temperatureGauge"
@@ -445,7 +438,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
-        android:fontFamily="@font/open_sans_light"
         android:text="100"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/temperatureGauge"
@@ -455,10 +447,9 @@
 
     <TextView
         android:id="@+id/textHumidityMsg"
-        android:layout_width="153dp"
+        android:layout_width="189dp"
         android:layout_height="59dp"
         android:layout_marginEnd="8dp"
-        android:fontFamily="@font/open_sans_light"
         android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/textHumidityUnit"
@@ -467,10 +458,9 @@
 
     <TextView
         android:id="@+id/textHeatIndexMsg"
-        android:layout_width="156dp"
+        android:layout_width="189dp"
         android:layout_height="59dp"
         android:layout_marginEnd="8dp"
-        android:fontFamily="@font/open_sans_light"
         android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/textHeatIndexUnit"
@@ -479,10 +469,9 @@
 
     <TextView
         android:id="@+id/textDewPointMsg"
-        android:layout_width="155dp"
+        android:layout_width="189dp"
         android:layout_height="59dp"
         android:layout_marginEnd="8dp"
-        android:fontFamily="@font/open_sans_light"
         android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/textDewPointUnit"

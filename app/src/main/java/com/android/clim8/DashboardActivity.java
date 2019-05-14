@@ -78,10 +78,10 @@ public class DashboardActivity extends AppCompatActivity
 
     // AWS IOT parameters
 
-    private static final String CUSTOMER_SPECIFIC_ENDPOINT = "a2r180mvn16c8k-ats.iot.us-east-1.amazonaws.com";
-    private static final String COGNITO_POOL_ID = "us-east-1:592c550e-cbf1-4c66-9530-f5585471bb32";
-    private static final Regions MY_REGION = Regions.US_EAST_1;
-    private static final String topic = "aws/things/ESP8266Controller/weathermonitoring";
+    private static final String CUSTOMER_SPECIFIC_ENDPOINT = "ENTER_CUSTOMER_SPECIFIC_ENDPOINT";
+    private static final String COGNITO_POOL_ID = "ENTER_COGNITO_POOL_ID";
+    private static final Regions MY_REGION = Regions.US_EAST_1;//CHANGE REGION ACCORDINGLY
+    private static final String topic = "ENTER_TOPIC";
 
     public static String OUT = "";
     public static String TEMPERATURE = "0.0";
