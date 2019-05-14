@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,6 +34,7 @@ public class AirQualityActivity extends AppCompatActivity {
     String APIKEY="DCB7D8FB-3397-4243-A5A6-E6C4B7DAA287";
     EditText zipCodeeditText;
     TextView areaTextView, aqiTextView, statusTextView;
+    TextView TextAirquality;
     CustomGauge airQualityGauge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class AirQualityActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         currentDate = sdf.format(date);
         airQualityGauge = (CustomGauge)findViewById(R.id.airQualityGauge);
+        TextAirquality = (TextView) findViewById(R.id.textAirquality);
         airQualityGauge.setEndValue(500);
         Log.d("URL", airURL);
     }
@@ -73,6 +76,8 @@ public class AirQualityActivity extends AppCompatActivity {
                         // Display the formatted json data in text view
                         areaTextView.setText(reportingArea+"\n"+status);
                         airQualityGauge.setValue(Integer.parseInt(AQI));
+                        TextAirquality.setText("AQI : " + AQI);
+
 
                 }catch (JSONException e){
                     e.printStackTrace();

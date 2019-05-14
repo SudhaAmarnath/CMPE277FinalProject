@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -38,5 +42,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
     implementation 'com.github.Pygmalion69:Gauge:1.2'
     implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+    implementation 'com.github.Pygmalion69:Ersa:0.3'
 
 }

@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
 import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,6 +44,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.nitri.gauge.Gauge;
+import eu.sergehelfrich.ersa.Dew;
+import eu.sergehelfrich.ersa.Scale;
+import eu.sergehelfrich.ersa.Temperature;
 import pl.pawelkleczkowski.customgauge.CustomGauge;
 
 public class DashboardActivity extends AppCompatActivity
@@ -54,10 +59,13 @@ public class DashboardActivity extends AppCompatActivity
 
     TextView TextHeatIndex;
     TextView TextTemperature;
-    TextView TextDayHighValue;
-    TextView TextDayLowValue;
+    TextView TextHeatIndexMsg;
+    TextView TextHumidityMsg;
+    TextView TextDewPointMsg;
     TextView TextHumidity;
     TextView TextFarhenheit;
+    TextView TextDewPoint;
+    TextView TextToday;
     EditText ipeditText;
     EditText thresholdeditText;
 
@@ -70,10 +78,10 @@ public class DashboardActivity extends AppCompatActivity
 
     // AWS IOT parameters
 
-    private static final String CUSTOMER_SPECIFIC_ENDPOINT = "ENTER_CUSTOMER_SPECIFIC_ENDPOINT";
-    private static final String COGNITO_POOL_ID = "ENTER_COGNITO_POOL_ID";
-    private static final Regions MY_REGION = Regions.US_EAST_1;//CHANGE REGION ACCORDINGLY
-    private static final String topic = "ENTER_TOPIC";
+    private static final String CUSTOMER_SPECIFIC_ENDPOINT = "a2r180mvn16c8k-ats.iot.us-east-1.amazonaws.com";
+    private static final String COGNITO_POOL_ID = "us-east-1:592c550e-cbf1-4c66-9530-f5585471bb32";
+    private static final Regions MY_REGION = Regions.US_EAST_1;
+    private static final String topic = "aws/things/ESP8266Controller/weathermonitoring";
 
     public static String OUT = "";
     public static String TEMPERATURE = "0.0";
@@ -113,7 +121,12 @@ public class DashboardActivity extends AppCompatActivity
         TextHumidity = (TextView) findViewById(R.id.textHumidity);
         TextFarhenheit = (TextView) findViewById(R.id.textFarenheit);
         TextTemperature = (TextView) findViewById(R.id.textTemerature);
+        TextDewPoint = (TextView) findViewById(R.id.textDewPoint);
         TemperatureGauge = (CustomGauge) findViewById(R.id.temperatureGauge);
+        TextHeatIndexMsg = (TextView) findViewById(R.id.textHeatIndexMsg);
+        TextHumidityMsg = (TextView) findViewById(R.id.textHumidityMsg);
+        TextDewPointMsg = (TextView) findViewById(R.id.textDewPointMsg);
+        TextToday = (TextView) findViewById(R.id.textToday);
         //FarenheitGauge = (Gauge) findViewById(R.id.farenheitGauge);
 
         clientId = UUID.randomUUID().toString();
@@ -134,6 +147,12 @@ public class DashboardActivity extends AppCompatActivity
         weatherMonitorRunnable.run();
         new WeatherMonitorAsyncTask().execute();
 
+        Date now = new Date();
+
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEE, MMM d");
+        String dateStr = simpleDateformat.format(now);
+
+        TextToday.setText(dateStr);
 
     }
 
@@ -306,6 +325,10 @@ public class DashboardActivity extends AppCompatActivity
             String jsonStrHumidity;
             String jsonStrHeatIndex;
             String jsonStrFahrenheit;
+            String jsonStrDewPoint;
+            String textHeatIndexMsg;
+            String textHumidityMsg;
+            String textDewPointMsg;
             float tempIndexConvInt = 50;
 
             try {
@@ -315,15 +338,24 @@ public class DashboardActivity extends AppCompatActivity
                 jsonStrFahrenheit = String.valueOf(object.getInt("fahrenheit"));
                 jsonStrHumidity = String.valueOf(object.getInt("humidity"));
                 jsonStrHeatIndex = String.valueOf(object.getInt("heatIndex"));
+                double dewPoint = calculateDewPoint(Double.parseDouble(jsonStrTemperature), Double.parseDouble(jsonStrHumidity));
+                jsonStrDewPoint = String.valueOf((int) dewPoint);
 
                 TemperatureGauge.setValue(Integer.valueOf(jsonStrTemperature));
-                //HumidityGauge.setValue(Integer.valueOf(jsonStrHumidity));
-                //HeatIndexGauge.setValue(Integer.valueOf(jsonStrHeatIndex));
-                //FarenheitGauge.setValue(Float.parseFloat((jsonStrFahrenheit)));
                 TextHeatIndex.setText(jsonStrHeatIndex);
                 TextHumidity.setText(jsonStrHumidity);
                 TextTemperature.setText(jsonStrTemperature);
                 TextFarhenheit.setText(jsonStrFahrenheit);
+                TextDewPoint.setText(jsonStrDewPoint);
+
+                textHeatIndexMsg = getHeatIndexString(Integer.valueOf(jsonStrHeatIndex));
+                TextHeatIndexMsg.setText(textHeatIndexMsg);
+
+                textHumidityMsg = getHumidityString(Integer.valueOf(jsonStrHumidity));
+                TextHumidityMsg.setText(textHumidityMsg);
+
+                textDewPointMsg = getDewPointString(Integer.valueOf(jsonStrDewPoint));
+                TextDewPointMsg.setText(textDewPointMsg);
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -360,6 +392,101 @@ public class DashboardActivity extends AppCompatActivity
 
         return OUT;
     }
+
+    public String getHumidityString (int humidity) {
+
+        String humidityString = "";
+
+        if (humidity == 0) {
+            return humidityString;
+        }
+        if (humidity >= 1 && humidity < 30) {
+            humidityString = "LOW HUMIDITY : May cause dry and itchy skin, susceptibility to cold and infection, damage to wood furnitures";
+        } else if (humidity > 30 && humidity <= 60) {
+            humidityString = "\nOPTIMUM HUMIDITY : Comfortable";
+        } else {
+            humidityString = "HIGH HUMIDITY : Possible mold growth, sleep discomfort, muggy conditions";
+        }
+        return humidityString;
+    }
+
+    public String getHeatIndexString (int heatIndex) {
+
+        String heatIndexString = "";
+
+        if (heatIndex == 0) {
+            return heatIndexString;
+        }
+        if (heatIndex <= 80) {
+            heatIndexString = "\nMODERATE HEAT INDEX : Ok";
+        } else if (heatIndex > 80 && heatIndex <= 90) {
+            heatIndexString = "CAUTION : Fatigue possible with prolonged exposure and/or physical activity";
+        } else if (heatIndex > 90  && heatIndex <= 103) {
+            heatIndexString = "EXTREME CAUTION : Heat stroke, heat cramps, or heat exhaustion possible with prolonged exposure and/or physical activity";
+        } else if (heatIndex > 103 && heatIndex <= 124) {
+            heatIndexString = "DANGER : Heat cramps or heat exhaustion likely, and heat stroke possible with prolonged exposure and/or physical activity";
+        } else {
+            heatIndexString = "EXTREME DANGER : Heat stroke highly likely";
+        }
+        return heatIndexString;
+    }
+
+    public double calculateDewPoint (double celcius, double rh) {
+
+        Temperature temperature = new Temperature(celcius, Scale.CELSIUS);
+        Temperature dewPoint = new Temperature(Scale.CELSIUS);
+        double relativeHumidity = rh;
+        double dewPointC = 0;
+        double dewPointF = 0;
+
+        if (celcius == 0 || rh == 0) {
+            return dewPointF;
+        }
+
+        Dew dew = new Dew();
+
+        try {
+            double kelvin = temperature.getKelvin();
+            dewPoint.setKelvin(dew.dewPoint(relativeHumidity, kelvin));
+            dewPointC = dewPoint.getTemperature();
+            dewPointF = dewPointC * 1.8 + 32;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dewPointF;
+
+    }
+
+    public String getDewPointString (int dewpoint) {
+
+        String dewPointString = "";
+
+        if (dewpoint == 0) {
+            return dewPointString;
+        }
+
+        if (dewpoint < 50) {
+            dewPointString = "\nA bit dry for some";
+        } else if (dewpoint >= 50 && dewpoint <= 54) {
+            dewPointString = "\nVery comfortable";
+        } else if (dewpoint >= 55 && dewpoint <= 59) {
+            dewPointString = "\nComfortable";
+        } else if (dewpoint >= 60 && dewpoint <= 64) {
+            dewPointString = "\nOK for most, but all perceive the humidity at upper edge";
+        } else if (dewpoint >= 65 && dewpoint <= 69) {
+            dewPointString = "\nSomewhat uncomfortable for most people at upper edge";
+        } else if (dewpoint >= 70 && dewpoint <= 74) {
+            dewPointString = "\nVery humid, quite uncomfortable";
+        } else if (dewpoint >= 75 && dewpoint <= 80) {
+            dewPointString = "\nExtremely uncomfortable, oppressive";
+        } else {
+            dewPointString = "\nSeverely high, even deadly for asthama related illness";
+        }
+
+        return dewPointString;
+    }
+
 
     public void ipAddress(){
         LayoutInflater layoutInflater = LayoutInflater.from(DashboardActivity.this);
@@ -431,6 +558,7 @@ public class DashboardActivity extends AppCompatActivity
         alert.show();
     }
 
+    @SuppressWarnings("deprecation")
     public void networkCheck() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         android.net.NetworkInfo wifi = cm
