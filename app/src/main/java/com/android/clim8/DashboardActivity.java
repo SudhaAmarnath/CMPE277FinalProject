@@ -179,6 +179,7 @@ public class DashboardActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_exit) {
+            System.exit(0);
             return true;
         }
 
@@ -191,24 +192,11 @@ public class DashboardActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.ipaddressId) {
-
-            ipAddress();
-            return true;
-        } else if (id == R.id.thresholdId) {
+        if (id == R.id.thresholdId) {
             threshold();
             return true;
 
-        } else if (id == R.id.configurationId) {
-
-        } else if (id == R.id.startserverId) {
-            SharedPreferences sharedPref = getSharedPreferences("WeatherInfo",Context.MODE_PRIVATE);
-            ipAddress = sharedPref.getString("IPAddress",null);
-            threshold = sharedPref.getString("Threshold","");
-            ipeditText.setText(ipAddress);
-            thresholdeditText.setText(threshold);
-
-        } else if (id == R.id.analyticsId) {
+        }  else if (id == R.id.analyticsId) {
             Intent analyticsIntent = new Intent(this,AnalyticsActivity.class);
             startActivity(analyticsIntent);
 
@@ -488,45 +476,6 @@ public class DashboardActivity extends AppCompatActivity
     }
 
 
-    public void ipAddress(){
-        LayoutInflater layoutInflater = LayoutInflater.from(DashboardActivity.this);
-        View promptView = layoutInflater.inflate(R.layout.ip_address, null);
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DashboardActivity.this);
-        alertDialogBuilder.setView(promptView);
-
-        final String ipRegEx = "(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
-
-        final EditText ipTxtField = (EditText) promptView.findViewById(R.id.ipAddress);
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        Pattern patternIp = Pattern.compile(ipRegEx);
-                        Matcher matcherIp = patternIp.matcher(ipTxtField.getText().toString());
-
-                        if(matcherIp.find()){
-
-                            SharedPreferences sharedPref = getSharedPreferences("WeatherInfo", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("IPAddress",ipTxtField.getText().toString());
-                            editor.apply();
-
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Invalid IP Address", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
-
     public void threshold(){
         LayoutInflater layoutInflater = LayoutInflater.from(DashboardActivity.this);
         View promptView = layoutInflater.inflate(R.layout.threshold, null);
@@ -556,45 +505,5 @@ public class DashboardActivity extends AppCompatActivity
         // create an alert dialog
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
-    }
-
-    @SuppressWarnings("deprecation")
-    public void networkCheck() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        android.net.NetworkInfo wifi = cm
-                .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        android.net.NetworkInfo datac = cm
-                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if ((wifi != null & datac != null)
-                && (wifi.isConnected() | datac.isConnected())) {
-        } else {
-
-            Context context = getApplicationContext();
-            AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
-            builder.setTitle("Confirm");
-            builder.setMessage("No internet Connection ! are You sure to connect internet ?");
-
-            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    final ComponentName cn = new ComponentName("com.android.settings", "com.android.settings.wifi.WifiSettings");
-                    intent.setComponent(cn);
-                    intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-            });
-
-            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
     }
 }
