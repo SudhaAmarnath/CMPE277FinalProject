@@ -33,19 +33,23 @@ public class AirQualityActivity extends AppCompatActivity {
     String currentDate="";
     String APIKEY="DCB7D8FB-3397-4243-A5A6-E6C4B7DAA287";
     EditText zipCodeeditText;
-    TextView areaTextView, aqiTextView, statusTextView;
+    TextView areaTextView, AqiTextMsgView, statusTextView;
     TextView TextAirquality;
     CustomGauge airQualityGauge;
+    TextView TextAirqualityMsg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_air_quality);
         zipCodeeditText = (EditText) findViewById(R.id.zipCodeeditText);
         areaTextView = (TextView) findViewById(R.id.areaTextView);
+        AqiTextMsgView = (TextView) findViewById(R.id.aqiTextmsg);
         requestQueue = Volley.newRequestQueue(this);
         currentDate = sdf.format(date);
         airQualityGauge = (CustomGauge)findViewById(R.id.airQualityGauge);
         TextAirquality = (TextView) findViewById(R.id.textAirquality);
+        TextAirqualityMsg = (TextView) findViewById(R.id.textAirqualityMsg);
         airQualityGauge.setEndValue(500);
         Log.d("URL", airURL);
     }
@@ -61,7 +65,7 @@ public class AirQualityActivity extends AppCompatActivity {
                 //mTextView.setText(response.toString());
 
                 // Process the JSON
-                try{
+                try {
                     // Loop through the array elements
 
                         // Get current json object
@@ -74,12 +78,15 @@ public class AirQualityActivity extends AppCompatActivity {
                         JSONObject obj = student.getJSONObject("Category");
                         String status = obj.getString("Name");
                         // Display the formatted json data in text view
-                        areaTextView.setText(reportingArea+"\n"+status);
+                        areaTextView.setText(reportingArea);
+                        AqiTextMsgView.setText(status);
                         airQualityGauge.setValue(Integer.parseInt(AQI));
+                        //airQualityGauge.setPointStartColor();
+                        //airQualityGauge.setPointStartColor();
                         TextAirquality.setText("AQI : " + AQI);
+                        TextAirqualityMsg.setText(getAirqualityString(Integer.parseInt(AQI)));
 
-
-                }catch (JSONException e){
+                } catch (JSONException e){
                     e.printStackTrace();
                 }
             }
@@ -94,5 +101,28 @@ public class AirQualityActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
     }
 
+
+    public String getAirqualityString (int aqi) {
+
+        String aqiString = "";
+
+        if (aqi == 0) {
+            return aqiString;
+        }
+        if (aqi <= 50) {
+            aqiString = "Air quality is considered satisfactory, and air pollution poses little or no risk.";
+        } else if (aqi > 50 && aqi <= 100) {
+            aqiString = "Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution.";
+        } else if (aqi > 100  && aqi <= 150) {
+            aqiString = "Members of sensitive groups may experience health effects. The general public is not likely to be affected.";
+        } else if (aqi > 151 && aqi <= 200) {
+            aqiString = "Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects.";
+        }  else if (aqi > 201 && aqi <= 250) {
+            aqiString = "Health alert: everyone may experience more serious health effects.";
+        } else {
+            aqiString = "Health warnings of emergency conditions. The entire population is more likely to be affected.";
+        }
+        return aqiString;
+    }
 
 }

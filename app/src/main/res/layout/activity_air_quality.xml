@@ -8,7 +8,7 @@
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="152dp"
+        android:layout_height="120dp"
         android:background="@drawable/side_nav_bar"
         android:gravity="center"
         android:orientation="vertical">
@@ -39,41 +39,48 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.176"
+        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.367" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <TextView
         android:id="@+id/areaTextView"
-        android:layout_width="131dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="134dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="56dp"
+        android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.686" />
+        app:layout_constraintEnd_toEndOf="@+id/airQualityGauge"
+        app:layout_constraintStart_toStartOf="@+id/airQualityGauge"
+        app:layout_constraintTop_toTopOf="@+id/airQualityGauge" />
+
+    <TextView
+        android:id="@+id/aqiTextmsg"
+        android:layout_width="134dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="12dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/airQualityGauge"
+        app:layout_constraintStart_toStartOf="@+id/airQualityGauge"
+        app:layout_constraintTop_toBottomOf="@+id/areaTextView" />
 
     <Button
         android:id="@+id/airQualityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="36dp"
         android:layout_marginBottom="8dp"
         android:onClick="airQuality"
         android:text="ENTER"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.369" />
+        app:layout_constraintVertical_bias="0.301" />
 
     <pl.pawelkleczkowski.customgauge.CustomGauge
         android:id="@+id/airQualityGauge"
@@ -100,26 +107,37 @@
         app:gaugeSweepAngle="270"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.817"
+        app:layout_constraintVertical_bias="0.62"
         tools:ignore="MissingConstraints" />
 
 
     <TextView
         android:id="@+id/textAirquality"
         android:layout_width="141dp"
-        android:layout_height="59dp"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="180dp"
         android:textAlignment="center"
         android:textColor="@color/md_blue_grey_400"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/airQualityGauge"
-        app:layout_constraintHorizontal_bias="0.447"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="@+id/airQualityGauge"
         app:layout_constraintTop_toTopOf="@+id/airQualityGauge" />
+
+    <TextView
+        android:id="@+id/textAirqualityMsg"
+        android:layout_width="300dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/airQualityGauge"
+        app:layout_constraintStart_toStartOf="@+id/airQualityGauge"
+        app:layout_constraintTop_toBottomOf="@+id/textAirquality" />
 
 </android.support.constraint.ConstraintLayout>

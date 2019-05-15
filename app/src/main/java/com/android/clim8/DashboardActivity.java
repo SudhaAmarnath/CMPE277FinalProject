@@ -230,7 +230,7 @@ public class DashboardActivity extends AppCompatActivity
 
             try {
 
-                Thread.sleep(2000);
+                Thread.sleep(1000);
 
                 mqttManager.connect(credentialsProvider, new AWSIotMqttClientStatusCallback() {
                     @Override
@@ -242,7 +242,10 @@ public class DashboardActivity extends AppCompatActivity
                             public void run() {
                                 if (status == AWSIotMqttClientStatus.Connecting) {
                                     Log.d(LOG_TAG, "Connecting");
-
+                                    try {
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 } else if (status == AWSIotMqttClientStatus.Connected) {
                                     Log.d(LOG_TAG, "Connected");
 
@@ -274,15 +277,11 @@ public class DashboardActivity extends AppCompatActivity
 
             JSONObject jObject;
 
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             Log.d(LOG_TAG, "topic = " + topic);
 
             try {
+
+                Thread.sleep(2000);
 
                 mqttManager.subscribeToTopic(topic, AWSIotMqttQos.QOS0,
                         new AWSIotMqttNewMessageCallback() {
