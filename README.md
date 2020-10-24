@@ -73,15 +73,8 @@ Significance of using DHT11 Sensor
 # Software
 
 Software used in the application
-●	Arduino
-●	Android Studio
-
-
-
-
-
-
-
+## Arduino
+## Android Studio
 
 
 
@@ -91,25 +84,18 @@ Software used in the application
 # CLOUD SERVICES
 
 Below are the cloud services used in our temperature monitoring services.
-●	AWS Mobile SDK
-●	AWS IoT Core
-●	AWS IoT Topic
-●	AWS Cognito
-●	AWS IoT 1-Click
-●	AWS SNS
-●	AWS SES
-●	AWS IoT Analytics
-●	AWS Lambda
-●	AWS DynamoDB
-●	AWS RDS
-●	AWS Mobile Hub	
-
-
-
-
-
-
-
+## AWS Mobile SDK
+## AWS IoT Core
+## AWS IoT Topic
+## AWS Cognito
+## AWS IoT 1-Click
+## AWS SNS
+## AWS SES
+## AWS IoT Analytics
+## AWS Lambda
+## AWS DynamoDB
+## AWS RDS
+## AWS Mobile Hub	
 
 
 
@@ -119,12 +105,6 @@ Sensors are captured from the environment and sent to Sensor Reading table and S
 
 
  
-
-
-
-
-
-
 
 
 FLOW DIAGRAM
